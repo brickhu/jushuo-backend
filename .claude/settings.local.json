@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(wxcloud run:deploy:*)",
+      "Bash(npx @cloudbase/cloudbase-mcp@latest:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(npx @cloudbase/cloudbase-mcp:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(tcb cloudrun deploy:*)",
+      "Bash(tcb:*)",
+      "WebFetch(domain:cloud.weixin.qq.com)",
+      "Bash(node .scripts/env-utils.js:*)"
+    ]
+  }
+}

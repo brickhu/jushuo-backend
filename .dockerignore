@@ -1,0 +1,11 @@
+vendor/
+README.md
+.gcloudignore
+.gitignore
+.git/
+*.log
+node_modules
+Dockerfile
+.vscode/
+.claude
+.mcp.json

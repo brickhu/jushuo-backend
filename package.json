@@ -1,0 +1,25 @@
+{
+  "name": "jushuo",
+  "version": "1.0.0",
+  "description": "句说(Jushuo),英文佳句开口说,AI陪你练口语",
+  "license": "Apache-2.0",
+  "author": "fei",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "unset_proxy" : "unset https_proxy http_proxy HTTPS_PROXY HTTP_PROXY ",
+    "deploy:test": "npm run unset_proxy && (source .env && source .env.test && wxcloud run:deploy --targetDir=. --dockerfile=Dockerfile -e $ENV_ID -s $APP_NAME --releaseType FULL --noConfirm --detach --containerPort $APP_PORT)",
+    "deploy:prod": "npm run unset_proxy && (source .env && source .env.pord && wxcloud run:deploy --targetDir=. --dockerfile=Dockerfile -e $ENV_ID -s $APP_NAME --releaseType FULL --noConfirm --detach --containerPort $APP_PORT)"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.2",
+    "sequelize": "^6.8.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
