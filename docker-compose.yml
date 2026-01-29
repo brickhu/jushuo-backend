@@ -1,0 +1,57 @@
+name: jushuo-backend
+
+x-dev-defaults: &dev-defaults
+  - MYSQL_ROOT_PASSWORD: YourSecureRootPass123!
+  - APP_PORT: 3000
+  - MYSQL_PORT: 3306
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    env_file:
+      - .env.local
+      - .env
+    ports:
+      - "${MYSQL_PORT:-3306}:${MYSQL_PORT:-3306}"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_DEFAULT_AUTHENTICATION_PLUGIN=mysql_native_password
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-YourSecureRootPass123!}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT:-3000}:${APP_PORT:-3000}"
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+      - .env.local
+    environment:
+      - NODE_ENV=production
+      - MYSQL_ADDRESS=localhost:${MYSQL_PORT:-3306}
+      - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD:-YourSecureRootPass123!}
+      - MYSQL_USERNAME=root
+    volumes:
+      # 挂载源代码，实现热更新
+      - .:/app
+      # 排除node_modules，使用容器内的
+      - /app/node_modules
+    # 覆盖启动命令，使用nodemon监听文件变化
+    command: npx nodemon --watch . --ext js,hbs,css --exec "node index.js"
+
+volumes:
+  mysql_data:
+

@@ -9,3 +9,4 @@ Dockerfile
 .vscode/
 .claude
 .mcp.json
+docker-compose.yml

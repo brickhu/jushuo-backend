@@ -1,0 +1,31 @@
+{
+  "containerPort": 3000,
+  "dockerfilePath": "Dockerfile",
+  "buildDir": "",
+  "minNum": 0,
+  "maxNum": 5,
+  "cpu": 1,
+  "mem": 2,
+  "policyType": "cpu",
+  "policyThreshold": 80,
+  "policyDetails": [
+	{
+		"PolicyType": "cpu",
+		"PolicyThreshold": 80
+	},
+	{
+		"PolicyType": "mem",
+		"PolicyThreshold": 80
+	}
+  ],
+  "envParams": {
+    "APP_NAME" : "jushuo"
+  },
+  "customLogs": "stdout",
+  "initialDelaySeconds": 2,
+  "dataBaseName": "jushuo_db",
+  "executeSQLs": [
+    "CREATE DATABASE IF NOT EXISTS jushuo_db;",
+    "USE jushuo_db;"
+  ]
+}
