@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 app.get('/', (req, res) => {
-  res.send('欢迎使用微信云托管！-> '+ (process.env.ENV_NAME || "未知"))
+  res.send('欢迎使用微信云托管！-> '+ (process.env.ENV_NAME || "没有"))
 })
 
 const port = process.env.APP_PORT || 3000
