@@ -34,24 +34,35 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${APP_PORT:-3000}:${APP_PORT:-3000}"
-    depends_on:
-      - mysql
     env_file:
       - .env
       - .env.local
     environment:
       - NODE_ENV=production
-      - MYSQL_ADDRESS=localhost:${MYSQL_PORT:-3306}
+      - MYSQL_ADDRESS=mysql:${MYSQL_PORT:-3306}
       - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD:-YourSecureRootPass123!}
       - MYSQL_USERNAME=root
+    depends_on:
+      - mysql
     volumes:
       # 挂载源代码，实现热更新
       - .:/app
       # 排除node_modules，使用容器内的
       - /app/node_modules
-    # 覆盖启动命令，使用nodemon监听文件变化
-    command: npx nodemon --watch . --ext js,hbs,css --exec "node index.js"
-
+    # 覆盖启动命令，等待MySQL就绪后启动应用
+    command: |
+      sh -c "
+      echo '等待MySQL启动...'
+      # 等待MySQL完全就绪
+      until mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD:-YourSecureRootPass123!} --ssl=0 -e 'SELECT 1' 2>/dev/null; do
+        echo 'MySQL尚未就绪，等待5秒...'
+        sleep 5
+      done
+      echo 'MySQL已就绪，尝试创建数据库...'
+      mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD:-YourSecureRootPass123!} --ssl=0 -e 'CREATE DATABASE IF NOT EXISTS jushuo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' 2>/dev/null || true
+      echo '启动应用...'
+      exec node index.js
+      "
 volumes:
   mysql_data:
 

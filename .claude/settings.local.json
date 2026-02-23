@@ -11,7 +11,9 @@
       "Bash(tcb cloudrun deploy:*)",
       "Bash(tcb:*)",
       "WebFetch(domain:cloud.weixin.qq.com)",
-      "Bash(node .scripts/env-utils.js:*)"
+      "Bash(node .scripts/env-utils.js:*)",
+      "Bash(xargs ls:*)",
+      "Bash(docker-compose ps:*)"
     ]
   }
 }
